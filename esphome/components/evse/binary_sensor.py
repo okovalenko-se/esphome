@@ -10,6 +10,7 @@ CONF_EV_CONNECTED = "ev_connected"
 CONF_EV_READY = "ev_ready"
 CONF_EV_CHARGING = "ev_charging"
 CONF_EV_ERROR = "ev_error"
+CONF_EV_DIODE_ERROR = "ev_diode_error"
 CONF_CABLE_DETECTED = "cable_detected"
 CONF_SOCKET_OVERHEAT = "socket_overheat"
 
@@ -23,6 +24,9 @@ CONFIG_SCHEMA = {
         device_class=DEVICE_CLASS_BATTERY_CHARGING,
     ),
     cv.Optional(CONF_EV_ERROR): binary_sensor.binary_sensor_schema(
+        device_class=DEVICE_CLASS_PROBLEM,
+    ),
+    cv.Optional(CONF_EV_DIODE_ERROR): binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_PROBLEM,
     ),
     cv.Optional(CONF_CABLE_DETECTED): binary_sensor.binary_sensor_schema(
@@ -48,6 +52,9 @@ async def to_code(config):
     if ev_error_config := config.get(CONF_EV_ERROR):
         ev_error_sensor = await binary_sensor.new_binary_sensor(ev_error_config)
         cg.add(evse_component.set_ev_error_binary_sensor(ev_error_sensor))
+    if ev_diode_error_config := config.get(CONF_EV_DIODE_ERROR):
+        ev_diode_error_sensor = await binary_sensor.new_binary_sensor(ev_diode_error_config)
+        cg.add(evse_component.set_ev_diode_error_binary_sensor(ev_diode_error_sensor))
     if cable_detected_config := config.get(CONF_CABLE_DETECTED):
         cable_detected_sensor = await binary_sensor.new_binary_sensor(cable_detected_config)
         cg.add(evse_component.set_cable_detected_binary_sensor(cable_detected_sensor))

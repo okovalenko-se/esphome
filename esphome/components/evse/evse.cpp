@@ -38,6 +38,7 @@ void EVSEComponent::dump_config() {
   LOG_BINARY_SENSOR("  ", "EV Ready", this->ev_ready_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "EV Charging", this->ev_charging_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "EV Error", this->ev_error_binary_sensor_);
+  LOG_BINARY_SENSOR("  ", "EV Diode Error", this->ev_diode_error_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "Cable Detected", this->cable_detected_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "EVSE Socket Overheat", this->socket_overheat_binary_sensor_);
 #endif
@@ -205,6 +206,12 @@ void EVSEComponent::read_data_() {
   // EV Error
   if (this->ev_error_binary_sensor_ != nullptr) {
     this->ev_error_binary_sensor_->publish_state(cp_state == CP_STATE_E);
+  }
+
+  // EV Diode Error
+  if (this->ev_diode_error_binary_sensor_ != nullptr) {
+    bool ev_diode_error = bit_is_set(data[R_STATE], DIE) ? true : false;
+    this->ev_diode_error_binary_sensor_->publish_state(ev_diode_error);
   }
 #endif
 

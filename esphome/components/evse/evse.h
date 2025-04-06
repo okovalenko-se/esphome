@@ -51,6 +51,8 @@ namespace evse {
 #define RER 2 // Remote Error (error that is set by remote system)
 #define SOE 3 // Socket Overheat Error
 #define CHA 4 // Charging (relay contacts closed)
+#define CDE 5 // Cable Disconnection Error
+#define DIE 6 // CP Diode Error
 
 #define PP_DEFAULT_CURRENT_LIMIT 13
 
@@ -86,6 +88,7 @@ class EVSEComponent : public PollingComponent, public i2c::I2CDevice {
   SUB_BINARY_SENSOR(ev_ready)
   SUB_BINARY_SENSOR(ev_charging)
   SUB_BINARY_SENSOR(ev_error)
+  SUB_BINARY_SENSOR(ev_diode_error)
   SUB_BINARY_SENSOR(cable_detected)
   SUB_BINARY_SENSOR(socket_overheat)
 #endif
