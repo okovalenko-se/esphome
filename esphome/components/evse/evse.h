@@ -85,7 +85,6 @@ class EVSEComponent : public PollingComponent, public i2c::I2CDevice {
 
 #ifdef USE_BINARY_SENSOR
   SUB_BINARY_SENSOR(ev_connected)
-  SUB_BINARY_SENSOR(ev_ready)
   SUB_BINARY_SENSOR(ev_charging)
   SUB_BINARY_SENSOR(ev_error)
   SUB_BINARY_SENSOR(ev_diode_error)

@@ -7,7 +7,6 @@ from . import CONF_EVSE_ID, EVSEComponent
 DEPENDENCIES = ["evse"]
 
 CONF_EV_CONNECTED = "ev_connected"
-CONF_EV_READY = "ev_ready"
 CONF_EV_CHARGING = "ev_charging"
 CONF_EV_ERROR = "ev_error"
 CONF_EV_DIODE_ERROR = "ev_diode_error"
@@ -19,7 +18,6 @@ CONFIG_SCHEMA = {
     cv.Optional(CONF_EV_CONNECTED): binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_PLUG,
     ),
-    cv.Optional(CONF_EV_READY): binary_sensor.binary_sensor_schema(),
     cv.Optional(CONF_EV_CHARGING): binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_BATTERY_CHARGING,
     ),
@@ -43,9 +41,6 @@ async def to_code(config):
     if ev_connected_config := config.get(CONF_EV_CONNECTED):
         ev_connected_sensor = await binary_sensor.new_binary_sensor(ev_connected_config)
         cg.add(evse_component.set_ev_connected_binary_sensor(ev_connected_sensor))
-    if ev_ready_config := config.get(CONF_EV_READY):
-        ev_ready_sensor = await binary_sensor.new_binary_sensor(ev_ready_config)
-        cg.add(evse_component.set_ev_ready_binary_sensor(ev_ready_sensor))
     if ev_charging_config := config.get(CONF_EV_CHARGING):
         ev_charging_sensor = await binary_sensor.new_binary_sensor(ev_charging_config)
         cg.add(evse_component.set_ev_charging_binary_sensor(ev_charging_sensor))

@@ -35,7 +35,6 @@ void EVSEComponent::dump_config() {
 #endif
 #ifdef USE_BINARY_SENSOR
   LOG_BINARY_SENSOR("  ", "EV Connected", this->ev_connected_binary_sensor_);
-  LOG_BINARY_SENSOR("  ", "EV Ready", this->ev_ready_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "EV Charging", this->ev_charging_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "EV Error", this->ev_error_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "EV Diode Error", this->ev_diode_error_binary_sensor_);
@@ -100,7 +99,6 @@ void EVSEComponent::read_data_() {
         this->ev_charging_binary_sensor_->publish_state(false);
         this->evse_state_text_sensor_->publish_state("unknown");
         this->ev_connected_binary_sensor_->publish_state(false);
-        this->ev_ready_binary_sensor_->publish_state(false);
         this->ev_error_binary_sensor_->publish_state(false);
         this->cp_current_limit_sensor_->publish_state(NAN);
         this->pp_current_limit_sensor_->publish_state(NAN);
@@ -185,20 +183,6 @@ void EVSEComponent::read_data_() {
 
       default:
         this->ev_connected_binary_sensor_->publish_state(false);
-        break;
-    }
-  }
-
-  // EV Ready
-  if (this->ev_ready_binary_sensor_ != nullptr) {
-    switch (cp_state) {
-      case CP_STATE_C:
-      case CP_STATE_D:
-        this->ev_ready_binary_sensor_->publish_state(true);
-        break;
-
-      default:
-        this->ev_ready_binary_sensor_->publish_state(false);
         break;
     }
   }
